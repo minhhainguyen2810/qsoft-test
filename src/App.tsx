@@ -1,25 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.scss";
+import CardList from "./CardList";
+
+export interface ITask {
+  id: number;
+  text: string;
+  editing?: boolean;
+}
+export interface ICard {
+  editingTitle?: boolean;
+  id: number;
+  title: string;
+  tasks: ITask[];
+}
 
 function App() {
+  const [listCard, setListCard] = useState<ICard[]>([
+    { title: "First Card", id: 1, tasks: [] },
+  ]);
+
+  const handleClick = () => {
+    setListCard([
+      ...listCard,
+      { title: "Another Card", id: new Date().getTime(), tasks: [] },
+    ]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <div className="wrapper">
+        <CardList list={listCard} setListCard={setListCard} />
+        <button
+          data-testid="add-card"
+          className="add-btn"
+          onClick={handleClick}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          +
+        </button>
+      </div>
+    </>
   );
 }
 
